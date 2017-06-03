@@ -17,13 +17,13 @@ namespace _MyRestClient
 
         private const string MyWebServiceUrl = MyWebServiceAddress + "api/" + MyControllerName +"/";
 
-        HttpClient httpClient = new HttpClient();
+        HttpClient _httpClient = new HttpClient();
         private HttpContent _httpContent;
 
         // Get All Details
         public async Task<List<T>> GetAsync()
         {
-            var json = await httpClient.GetStringAsync(MyWebServiceUrl);
+            var json = await _httpClient.GetStringAsync(MyWebServiceUrl);
 
             var taskModels = JsonConvert.DeserializeObject<List<T>>(json);
 
@@ -39,7 +39,7 @@ namespace _MyRestClient
 
             _httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            var result = await httpClient.PostAsync(MyWebServiceUrl, _httpContent);
+            var result = await _httpClient.PostAsync(MyWebServiceUrl, _httpContent);
 
             return result.IsSuccessStatusCode;
         }
@@ -53,7 +53,7 @@ namespace _MyRestClient
 
             _httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            var result = await httpClient.PutAsync(MyWebServiceUrl + id, _httpContent);
+            var result = await _httpClient.PutAsync(MyWebServiceUrl + id, _httpContent);
 
             return result.IsSuccessStatusCode;
         }
@@ -61,7 +61,7 @@ namespace _MyRestClient
         // Delete Existing Details
         public async Task<bool> DeleteAsync(int id, T t)
         {
-            var response = await httpClient.DeleteAsync(MyWebServiceUrl + id);
+            var response = await _httpClient.DeleteAsync(MyWebServiceUrl + id);
 
             return response.IsSuccessStatusCode;
         }
